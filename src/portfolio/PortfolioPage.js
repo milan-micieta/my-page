@@ -102,7 +102,10 @@ export function PortfolioPage() {
       />
 
       <main>
-        <HeroSection identity={PROFILE_DATA.identity} />
+        <HeroSection
+          identity={PROFILE_DATA.identity}
+          timeline={PROFILE_DATA.timeline}
+        />
 
         <AboutMeSection
           aboutStory={PROFILE_DATA.aboutStory}
@@ -116,7 +119,7 @@ export function PortfolioPage() {
 
         <CapabilitiesAndAbout
           skillMatrix={PROFILE_DATA.skillMatrix}
-          timeline={PROFILE_DATA.timeline}
+          cvTrajectory={PROFILE_DATA.cvTrajectory}
           identity={PROFILE_DATA.identity}
         />
       </main>
