@@ -416,8 +416,8 @@ WHERE ST_DWithin(location_geom, ST_MakePoint($user_lng, $user_lat)::geography, 5
       org: 'Priemyselné podnikové systémy, 3D vizualizácie & Offline PWA',
     },
     {
-      period: '2025 — 2026',
-      badge: 'Výskum & Publikácia',
+      period: '2023 — 2026',
+      badge: 'Bc. FEI TUKE & Výskum',
       role: 'Autor systému DRAVEN & IEEE štúdie',
       org: 'KPI FEI Technická univerzita v Košiciach',
     },
@@ -426,6 +426,68 @@ WHERE ST_DWithin(location_geom, ST_MakePoint($user_lng, $user_lat)::geography, 5
       badge: 'Open-Source',
       role: 'Core Contributor (@milan-micieta)',
       org: 'MudBlazor — komponentový ekosystém pre .NET Blazor',
+    },
+  ],
+
+  cvTrajectory: [
+    {
+      id: 'cv-enterprise',
+      period: '2025 — Súčasnosť',
+      type: 'Prax & Priemysel',
+      title: 'Full-Stack Software Engineer & 3D WebGL Architekt',
+      institution: 'Priemyselné podnikové systémy & Výrobná informatika · Košice',
+      summary:
+        'Návrh a implementácia kritických podnikových systémov pre plánovanie výroby, energetický dispečing, prediktívnu údržbu (TPM) a interaktívne 3D vizualizácie výrobných hál.',
+      highlights: [
+        'Architektúra interaktívneho 3D digitálneho dvojčaťa závodu v Three.js / WebGL s procedurálnou geometriou a raycastingom pri 60 FPS.',
+        'Vývoj podnikových systémov v .NET 9, Blazor (MudBlazor) a PostgreSQL pre kapacitné plánovanie výroby a energetických tokov.',
+        'Implementácia offline-first Progressive Web Apps (IndexedDB, Service Worker) a telemetrických systémov (Node.js, Electron, TimescaleDB).',
+      ],
+      tags: ['.NET 9 & C#', 'Blazor / MudBlazor', 'Three.js WebGL', 'PostgreSQL & TimescaleDB', 'Offline-First PWA'],
+    },
+    {
+      id: 'cv-opensource',
+      period: '2026 — Súčasnosť',
+      type: 'Open-Source & Komunita',
+      title: 'Open-Source Core Contributor (@milan-micieta)',
+      institution: 'MudBlazor (.NET Blazor Component Library) & Serverless OSS',
+      summary:
+        'Aktívny vývoj a opravy jadra jednej z najpoužívanejších open-source UI knižníc pre ekosystém .NET Blazor s dôrazom na presnosť DOM geometrie a bUnit regresné testy.',
+      highlights: [
+        'PR #14074 — Oprava výpočtu súradníc v MudPopover pri aplikovanom CSS body { zoom } naprieč prehliadačmi.',
+        'PR #13946 — Stabilizácia životného cyklu, z-index vrstvenia a klávesnicovej dostupnosti v komponente MudDialog.',
+        'Vývoj serverless doplnkov a dátových integrácií na platforme Node.js / TypeScript a Vercel Edge.',
+      ],
+      tags: ['MudBlazor Core', 'C# / .NET', 'TypeScript DOM', 'bUnit Testy', 'GitHub OSS'],
+    },
+    {
+      id: 'cv-fei-tuke',
+      period: '2023 — 2026',
+      type: 'Vysokoškolské štúdium & Výskum',
+      title: 'Bakalárske štúdium Informatiky (Bc.) & Výskum DRAVEN',
+      institution: 'Katedra počítačov a informatiky (KPI), FEI Technická univerzita v Košiciach',
+      summary:
+        'Štúdium informatiky so zameraním na softvérové inžinierstvo, databázové systémy, distribuované spracovanie dát a strojové učenie na grafoch.',
+      highlights: [
+        'Bakalárska práca a výskumná štúdia IEEE: autor systému DRAVEN pre automatizované vyhodnocovanie SQL riešení priamo v JetBrains DataGrip (overené na 42 študentoch, skóre SUS 84.5 / 100).',
+        'Dátové inžinierstvo a distribuované systémy: platforma Ticketlake s paralelným streamingom cez Apache Kafka, MQTT/TLS a RabbitMQ.',
+        'Geopriestorové a ML projekty: komunitná PWA Neighborhood Adventure Finder (PostGIS, Leaflet) a predikcia v dopravných grafoch Rails & Sails (Python, NetworkX, scikit-learn).',
+      ],
+      tags: ['KPI FEI TUKE', 'Java 17 & Spring Boot 3', 'IntelliJ Platform SDK', 'Apache Kafka', 'Python & Graph ML'],
+    },
+    {
+      id: 'cv-srobarka',
+      period: '2019 — 2023',
+      type: 'Stredoškolské vzdelanie',
+      title: 'Všeobecné gymnaziálne štúdium s maturitou',
+      institution: 'Gymnázium, Šrobárova 1, Košice („Šrobárka“)',
+      summary:
+        'Stredoškolské štúdium na tradičnom košickom gymnáziu Šrobárka s dôrazom na matematiku, informatiku, algoritmické myslenie a prírodné vedy.',
+      highlights: [
+        'Rozvoj analytického myslenia, základov algoritmizácie, programovania a logického riešenia problémov.',
+        'Prvé vlastné softvérové a webové projekty, ktoré viedli k zameraniu na štúdium informatiky na FEI TUKE.',
+      ],
+      tags: ['Gymnázium Šrobárova 1', 'Informatika & Matematika', 'Algoritmizácia', 'Košice'],
     },
   ],
 };
