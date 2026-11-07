@@ -33,7 +33,7 @@ describe('craftMath geometric & filtering domain utilities', () => {
 
   test('filterProjects filters by category and case-insensitive search query', () => {
     const all = filterProjects(PROFILE_DATA.projects, 'all', '');
-    expect(all.length).toBe(7);
+    expect(all.length).toBe(10);
 
     const ossOnly = filterProjects(PROFILE_DATA.projects, 'open-source', '');
     expect(ossOnly.length).toBe(3);
@@ -88,6 +88,24 @@ describe('PortfolioPage Authentic Craft Showcase (Confidentiality & Anti-Slop)',
       })
     ).toBeInTheDocument();
 
+    expect(
+      screen.getByRole('heading', {
+        name: /Systém prediktívnej údržby a OEE telemetrie \(TPM\)/i,
+      })
+    ).toBeInTheDocument();
+
+    expect(
+      screen.getByRole('heading', {
+        name: /Podnikový systém plánovania výroby a energetických tokov/i,
+      })
+    ).toBeInTheDocument();
+
+    expect(
+      screen.getByRole('heading', {
+        name: /Neighborhood Adventure Finder — Komunitná geolokačná PWA/i,
+      })
+    ).toBeInTheDocument();
+
     // Verify strict confidentiality
     const fullText = container.textContent;
     expect(fullText).not.toMatch(/SAKO|ISPA|CAMS|VOIS|Tatravagónka|MDJ/i);
@@ -113,8 +131,9 @@ describe('PortfolioPage Authentic Craft Showcase (Confidentiality & Anti-Slop)',
     ).toBeInTheDocument();
   });
 
-  test('toggles between light paper and dark atelier themes', () => {
-    render(<App />);
+  test('toggles between light paper, dark atelier, and system themes and persists in localStorage', () => {
+    window.localStorage.clear();
+    const { unmount } = render(<App />);
 
     const shell = screen.getByTestId('portfolio-shell');
     expect(shell).toHaveClass('theme-paper');
@@ -124,6 +143,20 @@ describe('PortfolioPage Authentic Craft Showcase (Confidentiality & Anti-Slop)',
     });
     fireEvent.click(themeBtn);
     expect(shell).toHaveClass('theme-atelier');
+    expect(window.localStorage.getItem('milan-portfolio-theme-mode')).toBe('atelier');
+
+    // Simulate page refresh (unmount & re-render)
+    unmount();
+    render(<App />);
+    const refreshedShell = screen.getByTestId('portfolio-shell');
+    expect(refreshedShell).toHaveClass('theme-atelier');
+
+    // Switch back to system default
+    const systemBtn = screen.getByRole('button', {
+      name: /Podľa nastavenia počítača \(Systém\)/i,
+    });
+    fireEvent.click(systemBtn);
+    expect(window.localStorage.getItem('milan-portfolio-theme-mode')).toBe('auto');
   });
 
   test('filters projects by category and search input', () => {
@@ -158,47 +191,43 @@ describe('PortfolioPage Authentic Craft Showcase (Confidentiality & Anti-Slop)',
     ).toBeInTheDocument();
   });
 
-  test('toggles project accordion to reveal what Milan did on the project', () => {
+  test('renders engineering solutions directly on the right side of project cards', () => {
     render(<App />);
 
-    const dravenAccordionBtn = screen.getByRole('button', {
-      name: /DRAVEN — Automatizované vyhodnocovanie SQL riešení v DataGripe — Čo som na projekte robil/i,
-    });
-    expect(dravenAccordionBtn).toHaveAttribute('aria-expanded', 'false');
-
-    // Click to expand
-    fireEvent.click(dravenAccordionBtn);
-    expect(dravenAccordionBtn).toHaveAttribute('aria-expanded', 'true');
+    // DRAVEN engineering solutions are directly visible
     expect(
       screen.getByText(/Vyhodnocovací engine porovnávajúci dátové množiny \(LinkedHashMap\)/i)
     ).toBeInTheDocument();
-
-    // Click again to collapse
-    fireEvent.click(dravenAccordionBtn);
-    expect(dravenAccordionBtn).toHaveAttribute('aria-expanded', 'false');
     expect(
-      screen.queryByText(/Vyhodnocovací engine porovnávajúci dátové množiny \(LinkedHashMap\)/i)
-    ).not.toBeInTheDocument();
+      screen.getByText(/Izolovaný read-only sandbox s automatickým rollbackom/i)
+    ).toBeInTheDocument();
+
+    // 3D Digital Twin engineering solutions
+    expect(
+      screen.getByText(/Procedurálne generovanie hál z 2D polygónov so stavovou indikáciou/i)
+    ).toBeInTheDocument();
+
+    // MudBlazor engineering solutions
+    expect(
+      screen.getByText(/Výpočet left\/top pozície MudPopover s kompenzáciou CSS body \{ zoom \}/i)
+    ).toBeInTheDocument();
   });
 
-  test('interacts with authentic project showcases (DataGrip IDE & MudBlazor PR diff)', () => {
+  test('renders real Git Contribution Graph and filters contributions by source', () => {
     render(<App />);
 
-    // DRAVEN DataGrip IDE runner interaction
-    const dravenBtn = screen.getByRole('button', { name: /Spustiť znova/i });
-    expect(screen.getByText(/PASS · 8ms · 100% zhoda dát/i)).toBeInTheDocument();
-    fireEvent.click(dravenBtn);
-    expect(screen.getByText(/Pripravené na spustenie/i)).toBeInTheDocument();
-    fireEvent.click(dravenBtn);
-    expect(screen.getByText(/PASS · 8ms · 100% zhoda dát/i)).toBeInTheDocument();
+    const graphCard = screen.getByTestId('contribution-graph-card');
+    expect(graphCard).toBeInTheDocument();
+    expect(screen.getByText(/príspevkov za posledný rok/i)).toBeInTheDocument();
 
-    // MudBlazor PR diff switcher
-    const dialogPrBtn = screen.getByRole('button', { name: /PR #13946 \(Dialog Lifecycle\)/i });
-    fireEvent.click(dialogPrBtn);
-    expect(screen.getByText(/Ošetrenie race-condition pri okamžitom znovuotvorení/i)).toBeInTheDocument();
+    // Filter by FEI TUKE GitLab
+    const feiFilterBtn = screen.getByRole('tab', { name: /FEI TUKE GitLab/i });
+    fireEvent.click(feiFilterBtn);
+    expect(feiFilterBtn).toHaveAttribute('aria-selected', 'true');
 
-    const popoverPrBtn = screen.getByRole('button', { name: /PR #14074 \(Popover Zoom\)/i });
-    fireEvent.click(popoverPrBtn);
-    expect(screen.getByText(/Korekcia pozície popoveru pri CSS body/i)).toBeInTheDocument();
+    // Filter by GitHub & OSS
+    const githubFilterBtn = screen.getByRole('tab', { name: /GitHub & OSS/i });
+    fireEvent.click(githubFilterBtn);
+    expect(githubFilterBtn).toHaveAttribute('aria-selected', 'true');
   });
 });
