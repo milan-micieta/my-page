@@ -1,13 +1,53 @@
+:root {
+  --font-sans: 'Instrument Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-serif: 'Newsreader', Georgia, serif;
+  --font-mono: 'JetBrains Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+
+  --ease-craft: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Modern Clean Light Ramp (Default) - Crisp, Neutral, Professional */
+  --bg-page: #fafafa;
+  --bg-card: #ffffff;
+  --bg-raised: #f4f4f5;
+  --bg-deep: #e4e4e7;
+  --ink-primary: #18181b;
+  --ink-secondary: #52525b;
+  --ink-muted: #71717a;
+  --hairline: rgba(24, 24, 27, 0.08);
+  --hairline-strong: rgba(24, 24, 27, 0.16);
+  --accent: #b84a27;
+  --accent-soft: rgba(184, 74, 39, 0.08);
+  --semantic-ok: #16a34a;
+  --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-float: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 22px;
+  font-weight: 400;
+  color: var(--ink-primary);
+  background-color: var(--bg-page);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+code,
+pre,
+kbd {
+  font-family: var(--font-mono);
+  font-feature-settings: 'tnum', 'zero';
 }
