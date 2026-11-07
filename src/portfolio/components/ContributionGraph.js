@@ -77,11 +77,11 @@ export function ContributionGraph() {
   const { weeks, monthLabels, totalCount, activeDaysCount } = useMemo(() => {
     // Anchor end date to latest date in dataset or current date (2026-11-08)
     const endDate = new Date(2026, 10, 8);
-    // Start 52 weeks earlier, aligned to Sunday (row 0 = Sunday, row 1 = Monday, ..., row 6 = Saturday)
+    // Start 52 weeks earlier, aligned to Monday (row 0 = Monday, ..., row 6 = Sunday)
     const startDate = new Date(endDate);
     startDate.setDate(endDate.getDate() - 364);
-    const dayOfWeek = startDate.getDay(); // 0 = Sun
-    startDate.setDate(startDate.getDate() - dayOfWeek);
+    const mondayOffset = (startDate.getDay() + 6) % 7; // 0 = Mon, 6 = Sun
+    startDate.setDate(startDate.getDate() - mondayOffset);
 
     const weeksList = [];
     const monthsList = [];
@@ -198,13 +198,13 @@ export function ContributionGraph() {
 
         <div className="contribution-body-grid">
           <div className="contribution-day-labels" aria-hidden="true">
-            <span></span>
             <span>Pon</span>
             <span></span>
             <span>Str</span>
             <span></span>
             <span>Pia</span>
             <span></span>
+            <span>Ned</span>
           </div>
 
           <div
