@@ -1,14 +1,21 @@
 import React, { useState, useRef } from 'react';
-import { Search, ArrowUpRight, GitBranch, ChevronDown } from 'lucide-react';
+import { Search, ArrowUpRight, GitBranch, Layers } from 'lucide-react';
 import { filterProjects } from '../utils/craftMath';
 import { useScrollReveal } from '../utils/useScrollReveal';
-import { ProjectWorkShowcase } from './ProjectWorkShowcase';
 
-function ProjectCaseCard({ project, isExpanded, onToggleExpanded }) {
+function ProjectCaseCard({ project, indexOrder = 0 }) {
+  const cardRef = useRef(null);
+  const cardRevealed = useScrollReveal(cardRef, { threshold: 0.08, rootMargin: '0px 0px -28px 0px' });
+
   return (
-    <article className="project-case-card">
+    <article
+      ref={cardRef}
+      className={`project-case-card scroll-reveal-item ${cardRevealed ? 'is-visible' : ''}`}
+      style={{ '--reveal-delay': `${Math.min(indexOrder * 55, 220)}ms` }}
+      data-testid={`project-card-${project.id}`}
+    >
       <div className="project-card-split">
-        {/* ĽAVÁ STRANA: Informácie, stack, akordeón prác a dole odkaz na repozitár */}
+        {/* ĽAVÁ STRANA: Informácie, sumár, stack a dole metrika s odkazom na repozitár */}
         <div className="project-left-col">
           <div className="project-meta-top">
             <div className="project-meta-left">
@@ -27,46 +34,6 @@ function ProjectCaseCard({ project, isExpanded, onToggleExpanded }) {
                 {tech}
               </span>
             ))}
-          </div>
-
-          {/* Rozbaľovacia lišta inžinierskych prác */}
-          <div className="project-accordion-wrapper">
-            <button
-              type="button"
-              onClick={onToggleExpanded}
-              className={`project-accordion-toggle ${isExpanded ? 'is-expanded' : ''}`}
-              aria-expanded={isExpanded}
-              aria-label={`${project.title} — ${isExpanded ? 'Skryť čo som na projekte robil' : 'Čo som na projekte robil'}`}
-            >
-              <div className="accordion-toggle-left">
-                <span className="accordion-toggle-text">Čo som na projekte robil</span>
-                <span className="accordion-count-badge">
-                  {project.highlights.length} riešenia
-                </span>
-              </div>
-              <div className="accordion-toggle-right">
-                <span className="accordion-action-text">{isExpanded ? 'Zbaliť' : 'Rozbaliť'}</span>
-                <ChevronDown
-                  size={15}
-                  strokeWidth={1.75}
-                  className={`accordion-chevron ${isExpanded ? 'is-open' : ''}`}
-                  aria-hidden="true"
-                />
-              </div>
-            </button>
-
-            {isExpanded && (
-              <div className="project-accordion-panel">
-                <ul className="project-highlights-list">
-                  {project.highlights.map((item, idx) => (
-                    <li key={idx} className="project-highlight-item">
-                      <span className="highlight-index">0{idx + 1}</span>
-                      <span className="highlight-content">{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
           </div>
 
           {/* Spodný riadok: Metriky a odkaz na GitHub dole */}
@@ -94,9 +61,28 @@ function ProjectCaseCard({ project, isExpanded, onToggleExpanded }) {
           </div>
         </div>
 
-        {/* PRAVÁ STRANA: Reálna vizuálna ukážka práce s interaktivitou (Showcase) */}
+        {/* PRAVÁ STRANA: Konkrétna inžinierska realizácia & architektonická špecifikácia */}
         <div className="project-right-col">
-          <ProjectWorkShowcase projectId={project.id} />
+          <div className="project-engineering-panel">
+            <div className="engineering-panel-header">
+              <div className="engineering-header-left">
+                <Layers size={14} strokeWidth={2} className="engineering-header-icon" aria-hidden="true" />
+                <span className="engineering-header-title">Čo som na projekte robil</span>
+              </div>
+              <span className="engineering-count-badge">
+                {project.highlights.length} riešenia
+              </span>
+            </div>
+
+            <ul className="engineering-highlights-list">
+              {project.highlights.map((item, idx) => (
+                <li key={idx} className="engineering-highlight-item">
+                  <span className="engineering-index">0{idx + 1}</span>
+                  <p className="engineering-text">{item}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </article>
@@ -106,19 +92,11 @@ function ProjectCaseCard({ project, isExpanded, onToggleExpanded }) {
 export function ProjectsSection({ projects, categories }) {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [expandedProjects, setExpandedProjects] = useState({});
 
   const sectionRef = useRef(null);
   const revealed = useScrollReveal(sectionRef);
 
   const visibleProjects = filterProjects(projects, selectedCategory, searchQuery);
-
-  const toggleExpanded = (id) => {
-    setExpandedProjects((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
-  };
 
   return (
     <section
@@ -136,7 +114,7 @@ export function ProjectsSection({ projects, categories }) {
             </h2>
           </div>
           <p className="section-lead">
-            Prehľad 7 projektov z akademického výskumu na FEI TUKE, open-source repozitárov a komerčnej praxe.
+            Prehľad {projects.length} projektov z akademického výskumu na FEI TUKE, open-source repozitárov a komerčnej praxe.
           </p>
         </div>
 
@@ -185,13 +163,8 @@ export function ProjectsSection({ projects, categories }) {
           </div>
         ) : (
           <div className="projects-list stagger-item stagger-3">
-            {visibleProjects.map((project) => (
-              <ProjectCaseCard
-                key={project.id}
-                project={project}
-                isExpanded={Boolean(expandedProjects[project.id])}
-                onToggleExpanded={() => toggleExpanded(project.id)}
-              />
+            {visibleProjects.map((project, idx) => (
+              <ProjectCaseCard key={project.id} project={project} indexOrder={idx} />
             ))}
           </div>
         )}

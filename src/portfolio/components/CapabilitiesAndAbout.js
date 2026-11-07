@@ -1,10 +1,13 @@
 import React, { useRef } from 'react';
 import { Mail, ArrowUpRight, Code2, Layers, Cpu } from 'lucide-react';
 import { useScrollReveal } from '../utils/useScrollReveal';
+import { ContributionGraph } from './ContributionGraph';
 
 export function CapabilitiesAndAbout({ skillMatrix, timeline, identity }) {
   const sectionRef = useRef(null);
   const revealed = useScrollReveal(sectionRef);
+  const footerRef = useRef(null);
+  const footerRevealed = useScrollReveal(footerRef, { threshold: 0.08, rootMargin: '0px 0px -16px 0px' });
 
   return (
     <>
@@ -65,12 +68,19 @@ export function CapabilitiesAndAbout({ skillMatrix, timeline, identity }) {
               </div>
             </div>
           </div>
+
+          <ContributionGraph />
         </div>
       </section>
 
-      <footer id="kontakt" className="site-footer" aria-labelledby="footer-heading">
+      <footer
+        id="kontakt"
+        ref={footerRef}
+        className={`site-footer ${footerRevealed ? 'is-revealed' : ''}`}
+        aria-labelledby="footer-heading"
+      >
         <div className="shell-container">
-          <div className="footer-card">
+          <div className="footer-card stagger-item stagger-1">
             <div className="footer-main-row">
               <div>
                 <span className="section-kicker">04 / KONTAKT &amp; SPOLUPRÁCA</span>
