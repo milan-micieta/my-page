@@ -1,7 +1,12 @@
 import React from 'react';
-import { User, FolderGit2, Layers, Compass, Sun, Moon, Mail } from 'lucide-react';
+import { User, FolderGit2, Layers, Compass, Sun, Moon, Monitor, Mail } from 'lucide-react';
 
-export function TopNav({ surfaceTone, onToggleSurfaceTone }) {
+export function TopNav({
+  surfaceTone,
+  themeMode = 'auto',
+  onToggleSurfaceTone,
+  onSelectThemeMode,
+}) {
   const isDark = surfaceTone === 'atelier';
 
   return (
@@ -35,19 +40,48 @@ export function TopNav({ surfaceTone, onToggleSurfaceTone }) {
         </nav>
 
         <div className="nav-actions">
-          <button
-            type="button"
-            onClick={onToggleSurfaceTone}
-            className="btn-secondary btn-compact"
-            aria-label={isDark ? 'Prepnúť na svetlý papierový režim' : 'Prepnúť na tmavý ateliérový režim'}
-          >
-            {isDark ? (
-              <Sun size={15} strokeWidth={1.5} className="nav-icon" aria-hidden="true" />
-            ) : (
-              <Moon size={15} strokeWidth={1.5} className="nav-icon" aria-hidden="true" />
-            )}
-            <span>{isDark ? 'Svetlý režim' : 'Tmavý režim'}</span>
-          </button>
+          <div className="theme-pill-switcher" role="group" aria-label="Výber farebného režimu">
+            <button
+              type="button"
+              onClick={() =>
+                onSelectThemeMode
+                  ? onSelectThemeMode('paper')
+                  : isDark && onToggleSurfaceTone()
+              }
+              className={`theme-pill-btn ${themeMode === 'paper' ? 'is-active' : ''}`}
+              aria-label={isDark ? 'Prepnúť na svetlý papierový režim' : 'Svetlý režim'}
+              title="Svetlý režim"
+            >
+              <Sun size={14} strokeWidth={1.75} aria-hidden="true" />
+              <span>Svetlý</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() =>
+                onSelectThemeMode
+                  ? onSelectThemeMode('atelier')
+                  : !isDark && onToggleSurfaceTone()
+              }
+              className={`theme-pill-btn ${themeMode === 'atelier' ? 'is-active' : ''}`}
+              aria-label={!isDark ? 'Prepnúť na tmavý ateliérový režim' : 'Tmavý režim'}
+              title="Tmavý režim"
+            >
+              <Moon size={14} strokeWidth={1.75} aria-hidden="true" />
+              <span>Tmavý</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => onSelectThemeMode && onSelectThemeMode('auto')}
+              className={`theme-pill-btn ${themeMode === 'auto' ? 'is-active' : ''}`}
+              aria-label="Podľa nastavenia počítača (Systém)"
+              title="Podľa nastavenia počítača (Systém)"
+            >
+              <Monitor size={14} strokeWidth={1.75} aria-hidden="true" />
+              <span>Systém</span>
+            </button>
+          </div>
 
           <a href="#kontakt" className="btn-primary btn-compact">
             <Mail size={15} strokeWidth={1.5} aria-hidden="true" />
