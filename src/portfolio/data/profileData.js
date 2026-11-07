@@ -288,6 +288,109 @@ score = gradient_boosting_model.predict(features)`,
         'Kompletná analýza rezíduí a vizualizácia dôležitosti príznakov (feature importance).',
       ],
     },
+    {
+      id: 'tpm-maintenance-telemetry',
+      index: '08',
+      featured: false,
+      title: 'Systém prediktívnej údržby a OEE telemetrie (TPM)',
+      category: 'work',
+      categoryLabel: 'Priemysel & Enterprise · Node.js, Electron & TimescaleDB',
+      year: '2025 — 2026',
+      role: 'Full-Stack inžinier a architekt telemetrického zberu',
+      summary:
+        'Podnikový systém Total Productive Maintenance (TPM) s hierarchickým UPM stromom strojov, kalendárom plánovaných odstávok a real-time kiosk dashboardmi.',
+      metrics: {
+        primaryLabel: 'Monitorovaná dostupnosť strojov & OEE',
+        primaryValue: 'OEE 88.4 % · MTBF 142 h',
+        comparison: 'TimescaleDB hypertabuľky a telemetria',
+      },
+      stack: ['Node.js', 'Electron', 'TimescaleDB', 'PostgreSQL', 'nginx', 'Less / CSS'],
+      repoUrl: 'https://github.com/milan-micieta',
+      artifact: {
+        file: 'tpm_telemetry_rollup.sql',
+        badge: 'TimescaleDB · Continuous Aggregate',
+        code: `-- Agregácia OEE metrík (Dostupnosť, Výkon, Kvalita) z IoT senzorov linky
+SELECT time_bucket('15 minutes', reading_time) AS bucket,
+       machine_id,
+       calculate_oee(avail_ratio, perf_ratio, qual_ratio) AS oee_index
+FROM machine_telemetry_hypertable;`,
+        tags: ['UPM Strom strojov', 'OEE / MTBF / MTTR', 'TimescaleDB Hypertables', 'Kiosk Režim'],
+      },
+      highlights: [
+        'Hierarchická evidencia strojov a zariadení formou UPM stromu s evidenciou hlásení a porúch.',
+        'Prehľadný plánovací kalendár údržby (preventívna, korektívna, prediktívna) a správa skladového hospodárstva.',
+        'Vyhodnocovanie kľúčových priemyselných ukazovateľov OEE, MTBF a MTTR s kiosk dashboardmi pre výrobné haly.',
+      ],
+    },
+    {
+      id: 'production-energy-planning',
+      index: '09',
+      featured: false,
+      title: 'Podnikový systém plánovania výroby a energetických tokov',
+      category: 'work',
+      categoryLabel: 'Priemysel & Enterprise · React, TypeScript & MS Data API Builder',
+      year: '2025 — 2026',
+      role: 'Frontend architekt a vývojár plánovacieho systému',
+      summary:
+        'Moderná webová platforma pre správu a harmonogramovanie kapacitného plánovania, materiálových tokov a energetického využitia s integráciou MS SQL Servera.',
+      metrics: {
+        primaryLabel: 'Architektúra rozhrania & Bezpečnosť',
+        primaryValue: 'MS DAB + RS256 JWT',
+        comparison: 'Tabulator virtualizované plánovanie',
+      },
+      stack: ['React 18', 'TypeScript', 'Vite', 'MS Data API Builder (DAB)', 'MS SQL Server', 'Tailwind CSS', 'shadcn/ui'],
+      repoUrl: 'https://github.com/milan-micieta',
+      artifact: {
+        file: 'dab_planning_query.graphql',
+        badge: 'Microsoft Data API Builder · MS SQL',
+        code: `// Dátový dotaz pre harmonogram kapacitného plánovania a tokov
+query GetProductionPlan($lineId: Int!, $shift: String!) {
+  productionPlans(filter: { lineId: { eq: $lineId }, shift: { eq: $shift } }) {
+    items { planId scheduledTime capacityLimit energyUsageKw status }
+  }
+}`,
+        tags: ['MS Data API Builder', 'RS256 JWT Auth', 'Tabulator Grid', 'Vite Dev Proxy'],
+      },
+      highlights: [
+        'Integrované plánovanie kapacitných harmonogramov a energetických tokov cez Microsoft Data API Builder (DAB).',
+        'Interaktívne dátové gridy s virtuálnym scrollovaním pomocou Tabulatoru a komponentov shadcn/ui.',
+        'Bezpečné overovanie používateľov pomocou RS256 asymetrického JWT a zero-CORS proxy architektúra.',
+      ],
+    },
+    {
+      id: 'neighborhood-adventure-finder',
+      index: '10',
+      featured: false,
+      title: 'Neighborhood Adventure Finder — Komunitná geolokačná PWA',
+      category: 'research',
+      categoryLabel: 'Výskum & FEI TUKE · React, Leaflet & Supabase PostGIS',
+      year: '2026',
+      role: 'Full-Stack inžinier a vývojár geolokačnej architektúry',
+      summary:
+        'Geolokačná komunitná Progressive Web App na báze OpenStreetMap (Leaflet) a PostGIS pre objavovanie, vytváranie a zdieľanie susedských aktivít v reálnom čase.',
+      metrics: {
+        primaryLabel: 'Geopriestorový rádius & Mobilná podpora',
+        primaryValue: 'PostGIS ST_DWithin · PWA',
+        comparison: 'Offline Service Worker a kamera',
+      },
+      stack: ['React', 'Vite', 'Leaflet / OpenStreetMap', 'Node.js Express', 'PostgreSQL + PostGIS', 'Supabase Storage', 'PWA'],
+      repoUrl: 'https://github.com/milan-micieta',
+      artifact: {
+        file: 'geo_adventure_query.sql',
+        badge: 'PostGIS · ST_DWithin Geolocation',
+        code: `-- Nájdenie susedských aktivít v okruhu 5 km podľa GPS súradníc používateľa
+SELECT id, title, category,
+       ST_Distance(location_geom, ST_MakePoint($user_lng, $user_lat)::geography) AS distance_meters
+FROM adventures
+WHERE ST_DWithin(location_geom, ST_MakePoint($user_lng, $user_lat)::geography, 5000);`,
+        tags: ['PostGIS Geofencing', 'Leaflet OSM', 'PWA Service Worker', 'Supabase Storage'],
+      },
+      highlights: [
+        'Interaktívna mapa s geolokačným vyhľadávaním udalostí v reálnom čase (PostGIS ST_DWithin a Leaflet).',
+        'Mobilná PWA funkcionalita s inštaláciou na plochu, Service Workerom a prístupom k fotoaparátu pre reportovanie.',
+        'Node.js Express API so Supabase backendom, ukladaním fotografií a automatickým fallbackom na demo dáta.',
+      ],
+    },
   ],
 
   skillMatrix: [
