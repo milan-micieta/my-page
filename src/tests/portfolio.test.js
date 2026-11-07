@@ -111,23 +111,29 @@ describe('PortfolioPage Authentic Craft Showcase (Confidentiality & Anti-Slop)',
     expect(fullText).not.toMatch(/SAKO|ISPA|CAMS|VOIS|Tatravagónka|MDJ/i);
   });
 
-  test('interacts with isometric 3D halls and switches hero dossier tabs', () => {
+  test('renders Hero current roles and full CV Trajectory section from Srobarka to present', () => {
     render(<App />);
 
-    const robotHallBtn = screen.getByRole('button', {
-      name: /HALA 02 Robotická montáž & Dopravníky/i,
-    });
-    fireEvent.click(robotHallBtn);
-    expect(screen.getByText(/6× Robotické rameno · 3× Dopravník/i)).toBeInTheDocument();
-
-    const stackTab = screen.getByRole('tab', { name: /Pracovný stack/i });
-    fireEvent.click(stackTab);
-    expect(screen.getByText(/milan\.profile\.ts/i)).toBeInTheDocument();
-
-    const activityTab = screen.getByRole('tab', { name: /Výsledky & PRs/i });
-    fireEvent.click(activityTab);
     expect(
-      screen.getByText(/DRAVEN — skóre použiteľnosti SUS \(42 študentov\)/i)
+      screen.getByRole('heading', {
+        name: /Aktuálne pôsobenie/i,
+      })
+    ).toBeInTheDocument();
+
+    expect(
+      screen.getByRole('heading', {
+        name: /Trajektória a pôsobenie/i,
+      })
+    ).toBeInTheDocument();
+
+    expect(
+      screen.getByText(/Gymnázium, Šrobárova 1, Košice \(„Šrobárka“\)/i)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/Bakalárske štúdium Informatiky \(Bc\.\) & Výskum DRAVEN/i)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/Full-Stack Software Engineer & 3D WebGL Architekt/i)
     ).toBeInTheDocument();
   });
 

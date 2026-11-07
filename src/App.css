@@ -1370,14 +1370,19 @@ body.theme-atelier,
 
 .capabilities-grid {
   display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  gap: 32px;
+  grid-template-columns: 1fr;
+  gap: 24px;
 }
 
 .skill-matrix-column {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+  gap: 20px;
+}
+
+.hero-trajectory-card {
+  padding: 20px 22px;
+  gap: 14px;
 }
 
 .skill-card-craft {
@@ -1822,6 +1827,174 @@ body.theme-atelier,
 }
 
 /* ==========================================================================
+   04 / CV Trajectory & Full Biography Section
+   ========================================================================== */
+.cv-trajectory-section {
+  padding: 64px 0;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.cv-timeline-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.cv-milestone-card {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 28px;
+  padding: 24px 28px;
+  border-radius: var(--fg-radius-card);
+  background-color: var(--fg-surface-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--fg-border);
+  box-shadow: var(--fg-shadow-card);
+  transition:
+    opacity 620ms var(--ease-craft) var(--reveal-delay, 0ms),
+    transform 620ms var(--ease-craft) var(--reveal-delay, 0ms),
+    border-color 180ms var(--ease-craft),
+    box-shadow 180ms var(--ease-craft);
+}
+
+.theme-atelier .cv-milestone-card,
+[data-theme="dark"] .cv-milestone-card {
+  background-color: rgba(24, 22, 19, 0.82);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+}
+
+.cv-milestone-card:hover {
+  border-color: var(--fg-border-hover);
+}
+
+.cv-milestone-aside {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding-right: 16px;
+  border-right: 1px solid var(--hairline);
+}
+
+.cv-period-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: var(--fg-radius-pill);
+  background-color: var(--accent-soft);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.cv-type-badge {
+  font-family: var(--font-sans);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--ink-muted);
+}
+
+.cv-milestone-main {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cv-milestone-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cv-milestone-title {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 21px;
+  font-weight: 500;
+  color: var(--ink-primary);
+}
+
+.cv-milestone-institution {
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.cv-milestone-summary {
+  margin: 0;
+  font-size: 14px;
+  line-height: 22px;
+  color: var(--ink-secondary);
+}
+
+.cv-highlights-list {
+  margin: 2px 0 0;
+  padding: 12px 16px;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-radius: var(--fg-radius-inner);
+  background-color: var(--fg-surface-raised);
+  border: 1px solid var(--fg-border-soft);
+}
+
+.theme-atelier .cv-highlights-list,
+[data-theme="dark"] .cv-highlights-list {
+  background-color: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.cv-highlight-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  line-height: 19px;
+  color: var(--ink-secondary);
+}
+
+.cv-highlight-icon {
+  color: var(--accent);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.cv-tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-top: 4px;
+}
+
+.cv-tag-chip {
+  padding: 4px 10px;
+  border-radius: var(--fg-radius-pill);
+  background-color: var(--fg-surface-raised);
+  border: 1px solid var(--fg-border-soft);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-secondary);
+}
+
+.theme-atelier .cv-tag-chip,
+[data-theme="dark"] .cv-tag-chip {
+  background-color: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.footer-trajectory-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ==========================================================================
    Footer
    ========================================================================== */
 .site-footer {
@@ -1889,8 +2062,18 @@ body.theme-atelier,
 @media (max-width: 1024px) {
   .hero-split,
   .project-card-split,
-  .capabilities-grid {
+  .capabilities-grid,
+  .cv-milestone-card {
     grid-template-columns: 1fr;
+  }
+
+  .cv-milestone-aside {
+    flex-direction: row;
+    align-items: center;
+    padding-right: 0;
+    padding-bottom: 10px;
+    border-right: none;
+    border-bottom: 1px solid var(--hairline);
   }
 
   .stat-cards-row {
