@@ -60,6 +60,7 @@ export const PROFILE_DATA = {
       id: 'draven-sql-evaluation',
       index: '01',
       featured: true,
+      shortTitle: 'DRAVEN · SQL Engine',
       title: 'DRAVEN — Automatizované vyhodnocovanie SQL riešení v DataGripe',
       category: 'research',
       categoryLabel: 'Výskum & EdTech · JetBrains DataGrip + Spring Boot',
@@ -93,6 +94,7 @@ FROM evaluate_submission(attempt_no => 1);
       id: 'industrial-digital-twin',
       index: '02',
       featured: true,
+      shortTitle: '3D Digitálne dvojča',
       title: 'Interaktívne 3D digitálne dvojča výrobného závodu',
       category: 'work',
       categoryLabel: 'Priemyselná 3D vizualizácia · Three.js & WebGL',
@@ -126,6 +128,7 @@ const label = new CSS2DObject(createMachineTag(machine.type));`,
       id: 'mudblazor-oss',
       index: '03',
       featured: true,
+      shortTitle: 'MudBlazor Core OSS',
       title: 'MudBlazor — Open-Source opravy komponentov MudPopover a MudDialog',
       category: 'open-source',
       categoryLabel: 'Open Source · .NET Blazor ekosystém (GitHub)',
@@ -159,6 +162,7 @@ var maxWidth = (windowWidth / zoom) - left;`,
       id: 'stremio-streamcinema',
       index: '04',
       featured: false,
+      shortTitle: 'Stream Cinema Edge',
       title: 'Stream Cinema — Serverless doplnok na Vercel Edge',
       category: 'open-source',
       categoryLabel: 'Open Source & Serverless · TypeScript',
@@ -193,6 +197,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       id: 'enterprise-planning-pwa',
       index: '05',
       featured: false,
+      shortTitle: 'Podnikové systémy (PWA)',
       title: 'Podnikové systémy pre plánovanie výroby a správu aktív (PWA)',
       category: 'work',
       categoryLabel: 'Priemysel & Enterprise · .NET Core & Blazor',
@@ -228,6 +233,7 @@ if (!networkService.IsOnline) {
       id: 'ticketlake-data-platform',
       index: '06',
       featured: false,
+      shortTitle: 'Ticketlake Streaming',
       title: 'Ticketlake — Dátová platforma a streaming cien lístkov',
       category: 'research',
       categoryLabel: 'Výskum & Data Platform',
@@ -260,6 +266,7 @@ for flight in scrape_flight_matrix(["VIE", "BUD", "BTS", "KSC"]):
       id: 'rails-sails-ml-generator',
       index: '07',
       featured: false,
+      shortTitle: 'Rails & Sails (Graph ML)',
       title: 'Rails & Sails — Predikcia bodových hodnôt v dopravnej sieti cez Graph ML',
       category: 'open-source',
       categoryLabel: 'Open Source & Graph ML · Python',
@@ -292,6 +299,7 @@ score = gradient_boosting_model.predict(features)`,
       id: 'tpm-maintenance-telemetry',
       index: '08',
       featured: false,
+      shortTitle: 'Prediktívna údržba (TPM)',
       title: 'Systém prediktívnej údržby a OEE telemetrie (TPM)',
       category: 'work',
       categoryLabel: 'Priemysel & Enterprise · Node.js, Electron & TimescaleDB',
@@ -326,6 +334,7 @@ FROM machine_telemetry_hypertable;`,
       id: 'production-energy-planning',
       index: '09',
       featured: false,
+      shortTitle: 'Plánovanie výroby & energie',
       title: 'Podnikový systém plánovania výroby a energetických tokov',
       category: 'work',
       categoryLabel: 'Priemysel & Enterprise · React, TypeScript & MS Data API Builder',
@@ -361,6 +370,7 @@ query GetProductionPlan($lineId: Int!, $shift: String!) {
       id: 'neighborhood-adventure-finder',
       index: '10',
       featured: false,
+      shortTitle: 'Neighborhood Adventure',
       title: 'Neighborhood Adventure Finder — Komunitná geolokačná PWA',
       category: 'research',
       categoryLabel: 'Výskum & FEI TUKE · React, Leaflet & Supabase PostGIS',
@@ -396,98 +406,137 @@ WHERE ST_DWithin(location_geom, ST_MakePoint($user_lng, $user_lat)::geography, 5
   skillMatrix: [
     {
       category: 'Backend & Architektúra',
-      skills: ['C# / .NET Core', 'Java 17 / Spring Boot 3.4', 'PostgreSQL & Transakcie', 'Kafka · MQTT · RabbitMQ'],
+      skills: [
+        { name: 'C# / .NET Core', tag: 'Core · Produkcia', level: 96 },
+        { name: 'Java 17 / Spring Boot 3.4', tag: 'Výskum & FEI TUKE', level: 92 },
+        { name: 'PostgreSQL & Transakcie', tag: 'Produkčné DB', level: 90 },
+        { name: 'Kafka · MQTT · RabbitMQ', tag: 'IoT & Messaging', level: 85 },
+      ],
     },
     {
       category: 'Frontend & 3D Web',
-      skills: ['React 18 & TypeScript', 'Blazor & MudBlazor', 'Three.js / WebGL & CSS2D', 'Offline-First PWA'],
+      skills: [
+        { name: 'React 18 & TypeScript', tag: 'Core · Denná prax', level: 95 },
+        { name: 'Blazor & MudBlazor', tag: 'Enterprise UI', level: 92 },
+        { name: 'Three.js / WebGL & CSS2D', tag: '3D Grafika & CAD', level: 88 },
+        { name: 'Offline-First PWA', tag: 'Service Worker', level: 86 },
+      ],
     },
     {
       category: 'Tooling & Dátová veda',
-      skills: ['IntelliJ Platform SDK', 'Python (NetworkX, scikit-learn)', 'Playwright & Selenium', 'Docker & Vercel Edge'],
+      skills: [
+        { name: 'IntelliJ Platform SDK', tag: 'Plugin Dev', level: 90 },
+        { name: 'Python (NetworkX, scikit-learn)', tag: 'Dátová analýza', level: 85 },
+        { name: 'Playwright & Selenium', tag: 'E2E Automatizácia', level: 88 },
+        { name: 'Docker & Vercel Edge', tag: 'CI/CD & Infra', level: 87 },
+      ],
     },
   ],
 
   timeline: [
     {
       period: '2025 — Súčasnosť',
-      badge: 'Enterprise Vývoj',
+      badge: 'Enterprise & 3D WebGL',
       role: 'Full-Stack Software Engineer',
       org: 'Priemyselné podnikové systémy, 3D vizualizácie & Offline PWA',
     },
     {
-      period: '2023 — 2026',
-      badge: 'Bc. FEI TUKE & Výskum',
-      role: 'Autor systému DRAVEN & IEEE štúdie',
-      org: 'KPI FEI Technická univerzita v Košiciach',
+      period: '2026 — Súčasnosť',
+      badge: 'FEI TUKE · Ing.',
+      role: 'Inžinierske štúdium Informatiky (Ing.)',
+      org: 'Fakulta elektrotechniky a informatiky, TUKE v Košiciach',
     },
     {
-      period: '2026',
-      badge: 'Open-Source',
-      role: 'Core Contributor (@milan-micieta)',
-      org: 'MudBlazor — komponentový ekosystém pre .NET Blazor',
+      period: '2023 — 2026',
+      badge: 'FEI TUKE · Bc.',
+      role: 'Bakalárske štúdium Informatiky (Bc. · DRAVEN)',
+      org: 'Fakulta elektrotechniky a informatiky, TUKE v Košiciach',
+    },
+    {
+      period: '2019 — 2023',
+      badge: 'Stredná škola',
+      role: 'Gymnázium, Šrobárova 1, Košice',
+      org: 'Vzdelávací program s rozšíreným vyučovaním anglického jazyka',
     },
   ],
 
-  cvTrajectory: [
-    {
-      id: 'cv-enterprise',
-      period: '2025 — Súčasnosť',
-      type: 'Prax & Priemysel',
-      title: 'Full-Stack Software Engineer & 3D WebGL Architekt',
-      institution: 'Priemyselné podnikové systémy & Výrobná informatika · Košice',
-      summary:
-        'Návrh a implementácia kritických podnikových systémov pre plánovanie výroby, energetický dispečing, prediktívnu údržbu (TPM) a interaktívne 3D vizualizácie výrobných hál.',
-      highlights: [
-        'Architektúra interaktívneho 3D digitálneho dvojčaťa závodu v Three.js / WebGL s procedurálnou geometriou a raycastingom pri 60 FPS.',
-        'Vývoj podnikových systémov v .NET 9, Blazor (MudBlazor) a PostgreSQL pre kapacitné plánovanie výroby a energetických tokov.',
-        'Implementácia offline-first Progressive Web Apps (IndexedDB, Service Worker) a telemetrických systémov (Node.js, Electron, TimescaleDB).',
-      ],
-      tags: ['.NET 9 & C#', 'Blazor / MudBlazor', 'Three.js WebGL', 'PostgreSQL & TimescaleDB', 'Offline-First PWA'],
-    },
-    {
-      id: 'cv-opensource',
-      period: '2026 — Súčasnosť',
-      type: 'Open-Source & Komunita',
-      title: 'Open-Source Core Contributor (@milan-micieta)',
-      institution: 'MudBlazor (.NET Blazor Component Library) & Serverless OSS',
-      summary:
-        'Aktívny vývoj a opravy jadra jednej z najpoužívanejších open-source UI knižníc pre ekosystém .NET Blazor s dôrazom na presnosť DOM geometrie a bUnit regresné testy.',
-      highlights: [
-        'PR #14074 — Oprava výpočtu súradníc v MudPopover pri aplikovanom CSS body { zoom } naprieč prehliadačmi.',
-        'PR #13946 — Stabilizácia životného cyklu, z-index vrstvenia a klávesnicovej dostupnosti v komponente MudDialog.',
-        'Vývoj serverless doplnkov a dátových integrácií na platforme Node.js / TypeScript a Vercel Edge.',
-      ],
-      tags: ['MudBlazor Core', 'C# / .NET', 'TypeScript DOM', 'bUnit Testy', 'GitHub OSS'],
-    },
-    {
-      id: 'cv-fei-tuke',
-      period: '2023 — 2026',
-      type: 'Vysokoškolské štúdium & Výskum',
-      title: 'Bakalárske štúdium Informatiky (Bc.) & Výskum DRAVEN',
-      institution: 'Katedra počítačov a informatiky (KPI), FEI Technická univerzita v Košiciach',
-      summary:
-        'Štúdium informatiky so zameraním na softvérové inžinierstvo, databázové systémy, distribuované spracovanie dát a strojové učenie na grafoch.',
-      highlights: [
-        'Bakalárska práca a výskumná štúdia IEEE: autor systému DRAVEN pre automatizované vyhodnocovanie SQL riešení priamo v JetBrains DataGrip (overené na 42 študentoch, skóre SUS 84.5 / 100).',
-        'Dátové inžinierstvo a distribuované systémy: platforma Ticketlake s paralelným streamingom cez Apache Kafka, MQTT/TLS a RabbitMQ.',
-        'Geopriestorové a ML projekty: komunitná PWA Neighborhood Adventure Finder (PostGIS, Leaflet) a predikcia v dopravných grafoch Rails & Sails (Python, NetworkX, scikit-learn).',
-      ],
-      tags: ['KPI FEI TUKE', 'Java 17 & Spring Boot 3', 'IntelliJ Platform SDK', 'Apache Kafka', 'Python & Graph ML'],
-    },
-    {
-      id: 'cv-srobarka',
-      period: '2019 — 2023',
-      type: 'Stredoškolské vzdelanie',
-      title: 'Všeobecné gymnaziálne štúdium s maturitou',
-      institution: 'Gymnázium, Šrobárova 1, Košice („Šrobárka“)',
-      summary:
-        'Stredoškolské štúdium na tradičnom košickom gymnáziu Šrobárka s dôrazom na matematiku, informatiku, algoritmické myslenie a prírodné vedy.',
-      highlights: [
-        'Rozvoj analytického myslenia, základov algoritmizácie, programovania a logického riešenia problémov.',
-        'Prvé vlastné softvérové a webové projekty, ktoré viedli k zameraniu na štúdium informatiky na FEI TUKE.',
-      ],
-      tags: ['Gymnázium Šrobárova 1', 'Informatika & Matematika', 'Algoritmizácia', 'Košice'],
-    },
-  ],
+  cvTrajectory: {
+    education: [
+      {
+        id: 'edu-fei-ing',
+        title: 'Inžinierske štúdium (Ing.) — Odbor Informatika',
+        lines: [
+          'Fakulta elektrotechniky a informatiky, Technická univerzita v Košiciach',
+          'Košice, Slovenská republika',
+        ],
+        period: '2026 — Súčasnosť',
+      },
+      {
+        id: 'edu-fei-bc',
+        title: 'Bakalárske štúdium (Bc.) — Odbor Informatika',
+        lines: [
+          'Fakulta elektrotechniky a informatiky, Technická univerzita v Košiciach',
+          'Bakalárska práca a IEEE štúdia: systém DRAVEN (SUS 84.5 / 100)',
+        ],
+        period: '2023 — 2026',
+      },
+      {
+        id: 'edu-ccna',
+        title: 'CCNA: Introduction to Networks',
+        lines: ['Cisco Networking Academy certifikát · Sieťová architektúra a protokoly'],
+        period: '2025',
+      },
+      {
+        id: 'edu-srobarka',
+        title: 'Gymnázium, Šrobárova 1, Košice',
+        lines: [
+          'Vzdelávací program s rozšíreným vyučovaním anglického jazyka',
+          'Košice, Slovenská republika',
+        ],
+        period: '2019 — 2023',
+      },
+    ],
+    experience: [
+      {
+        id: 'exp-enterprise',
+        title: 'Full-Stack Software Engineer & 3D WebGL Architekt',
+        lines: [
+          'Priemyselné podnikové systémy, OEE telemetria & 3D digitálne dvojčatá',
+          '.NET 9 · Blazor · Three.js · Node.js · PostgreSQL / TimescaleDB',
+        ],
+        period: '2025 — Súčasnosť',
+      },
+      {
+        id: 'exp-draven',
+        title: 'Autor systému DRAVEN & Výskum v oblasti EdTech',
+        lines: [
+          'Automatizované vyhodnocovanie SQL riešení v JetBrains DataGrip',
+          'KPI FEI Technická univerzita v Košiciach · Publikácia IEEE',
+        ],
+        period: '2025 — 2026',
+      },
+      {
+        id: 'exp-opensource',
+        title: 'Open-Source Core Contributor (@milan-micieta)',
+        lines: [
+          'MudBlazor — komponentový ekosystém pre .NET Blazor',
+          'Začlenené opravy jadra (PR #14074 & PR #13946) a bUnit regresné testy',
+        ],
+        period: '2026 — Súčasnosť',
+      },
+    ],
+  },
 };
+
+export const HOME_PROJECT_IDS = [
+  'draven-sql-evaluation',
+  'industrial-digital-twin',
+  'rails-sails-ml-generator',
+  'neighborhood-adventure-finder',
+];
+
+PROFILE_DATA.homeProjects = HOME_PROJECT_IDS.map((id, idx) => {
+  const p = PROFILE_DATA.projects.find((item) => item.id === id);
+  return p ? { ...p, index: `0${idx + 1}` } : null;
+}).filter(Boolean);
+
