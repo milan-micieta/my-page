@@ -1,6 +1,16 @@
 import React from 'react';
-import { ArrowRight, Layers } from 'lucide-react';
+import { Layers } from 'lucide-react';
 import { HeroAntigravityCanvas } from './HeroAntigravityCanvas';
+import { TiltCard, LearnMoreChevron, TextMorph } from './MotionPrimitives';
+import avatarImg from '../../assets/avatar.jpg';
+
+const HERO_SPECIALIZATIONS = [
+  'Full-Stack Software Engineer',
+  '.NET & Blazor Architektúra',
+  'Three.js 3D WebGL & Grafika',
+  'Java Spring Boot & Výskum TUKE',
+  'Offline-First PWA Inžinier',
+];
 
 export function HeroSection({ identity, timeline = [] }) {
   const mousePosRef = React.useRef({ x: -9999, y: -9999, active: false });
@@ -40,6 +50,13 @@ export function HeroSection({ identity, timeline = [] }) {
             <span className="context-mono">{identity.handle}</span>
           </div>
 
+          <div className="hero-morph-row stagger-item stagger-1">
+            <TextMorph
+              label="Kľúčové špecializácie"
+              phrases={HERO_SPECIALIZATIONS}
+            />
+          </div>
+
           <h1 id="hero-heading" className="hero-headline stagger-item stagger-2">
             {identity.headline}
           </h1>
@@ -47,9 +64,9 @@ export function HeroSection({ identity, timeline = [] }) {
           <p className="hero-subhead stagger-item stagger-3">{identity.subhead}</p>
 
           <div className="hero-cta-row stagger-item stagger-4">
-            <a href="#projekty" className="btn-primary btn-hero">
+            <a href="#projekty" className="btn-primary btn-hero t-learn">
               <span>Zobraziť vybrané projekty</span>
-              <ArrowRight size={16} strokeWidth={1.5} aria-hidden="true" />
+              <LearnMoreChevron />
             </a>
             <a href="#o-mne" className="btn-secondary btn-hero">
               <span>O mne &amp; Prístup</span>
@@ -65,36 +82,52 @@ export function HeroSection({ identity, timeline = [] }) {
         </div>
 
         <div className="hero-visual-col is-revealed">
-          <div className="specimen-frame stagger-item stagger-2">
-            <div className="timeline-card-craft hero-trajectory-card">
-              <div className="specimen-header">
-                <div className="skill-card-header">
-                  <Layers size={16} strokeWidth={1.5} className="row-icon" aria-hidden="true" />
-                  <h2 className="skill-category-title">Aktuálne pôsobenie</h2>
+          <TiltCard
+            className="specimen-frame stagger-item stagger-2"
+            innerClassName="timeline-card-craft hero-trajectory-card"
+            maxTilt={11}
+            dataTestId="hero-tilt-card"
+          >
+            <div className="hero-card-header">
+              <div className="hero-profile-row">
+                <img
+                  src={avatarImg}
+                  alt="Milan Mičieta"
+                  className="hero-avatar-img"
+                />
+                <div className="hero-profile-text">
+                  <span className="hero-profile-name">Milan Mičieta</span>
+                  <span className="hero-profile-handle">@milan-micieta</span>
                 </div>
-                <a
-                  href="#skusenosti"
-                  className="specimen-pill specimen-pill-link"
-                >
-                  <span>Celý životopis</span>
-                  <ArrowRight size={11} strokeWidth={1.5} aria-hidden="true" />
-                </a>
               </div>
 
-              <div className="timeline-items">
-                {timeline.map((item) => (
-                  <div key={item.period} className="timeline-item">
-                    <div className="timeline-item-header">
-                      <span className="timeline-year">{item.period}</span>
-                      <span className="timeline-badge">{item.badge}</span>
-                    </div>
-                    <strong className="timeline-role">{item.role}</strong>
-                    <span className="timeline-org">{item.org}</span>
-                  </div>
-                ))}
-              </div>
+              <a
+                href="#skusenosti"
+                className="specimen-pill specimen-pill-link t-learn"
+              >
+                <span>Celý životopis</span>
+                <LearnMoreChevron />
+              </a>
             </div>
-          </div>
+
+            <div className="hero-trajectory-title-bar">
+              <Layers size={14} strokeWidth={1.75} className="row-icon" aria-hidden="true" />
+              <h2 className="skill-category-title">Trajektória a pôsobenie</h2>
+            </div>
+
+            <div className="trajectory-line-track is-compact">
+              {timeline.map((item) => (
+                <div key={item.role} className="trajectory-line-item">
+                  <span className="trajectory-node-dot" aria-hidden="true" />
+                  <div className="trajectory-node-content">
+                    <strong className="trajectory-node-title">{item.role}</strong>
+                    <span className="trajectory-node-line">{item.org}</span>
+                    <span className="trajectory-node-year">{item.period}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </TiltCard>
         </div>
       </div>
     </section>

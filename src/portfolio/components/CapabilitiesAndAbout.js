@@ -1,71 +1,60 @@
 import React, { useRef } from 'react';
-import { Mail, ArrowUpRight, Code2, Cpu, Compass, CheckCircle2 } from 'lucide-react';
+import { Mail, ArrowUpRight, Code2, Cpu, Compass, GraduationCap, Briefcase } from 'lucide-react';
 import { useScrollReveal } from '../utils/useScrollReveal';
 import { ContributionGraph } from './ContributionGraph';
 
-function CvMilestoneCard({ item, index }) {
-  const cardRef = useRef(null);
-  const cardRevealed = useScrollReveal(cardRef, {
-    threshold: 0.12,
-    rootMargin: '0px 0px -32px 0px',
+function TrajectoryColumn({ kicker, title, icon: Icon, items = [], delay = 0 }) {
+  const colRef = useRef(null);
+  const colRevealed = useScrollReveal(colRef, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -28px 0px',
   });
 
   return (
-    <article
-      ref={cardRef}
-      style={{ '--reveal-delay': `${Math.min(index * 70, 280)}ms` }}
-      className={`cv-milestone-card scroll-reveal-item ${cardRevealed ? 'is-visible' : ''}`}
+    <div
+      ref={colRef}
+      style={{ '--reveal-delay': `${delay}ms` }}
+      className={`trajectory-column-card scroll-reveal-item ${colRevealed ? 'is-visible' : ''}`}
     >
-      <div className="cv-milestone-aside">
-        <span className="cv-period-pill">{item.period}</span>
-        <span className="cv-type-badge">{item.type}</span>
-      </div>
-
-      <div className="cv-milestone-main">
-        <div className="cv-milestone-header">
-          <h3 className="cv-milestone-title">{item.title}</h3>
-          <span className="cv-milestone-institution">{item.institution}</span>
+      <div className="trajectory-column-header">
+        <span className="trajectory-column-kicker">{kicker}</span>
+        <div className="trajectory-column-title-row">
+          <Icon size={18} strokeWidth={1.75} className="trajectory-column-icon" aria-hidden="true" />
+          <h3 className="trajectory-column-title">{title}</h3>
         </div>
-
-        <p className="cv-milestone-summary">{item.summary}</p>
-
-        {item.highlights && item.highlights.length > 0 && (
-          <ul className="cv-highlights-list">
-            {item.highlights.map((point, idx) => (
-              <li key={idx} className="cv-highlight-item">
-                <CheckCircle2
-                  size={14}
-                  strokeWidth={1.75}
-                  className="cv-highlight-icon"
-                  aria-hidden="true"
-                />
-                <span>{point}</span>
-              </li>
-            ))}
-          </ul>
-        )}
-
-        {item.tags && item.tags.length > 0 && (
-          <div className="cv-tags-row">
-            {item.tags.map((tag) => (
-              <span key={tag} className="cv-tag-chip">
-                {tag}
-              </span>
-            ))}
-          </div>
-        )}
       </div>
-    </article>
+
+      <div className="trajectory-line-track">
+        {items.map((item) => (
+          <div key={item.id} className="trajectory-line-item">
+            <span className="trajectory-node-dot" aria-hidden="true" />
+            <div className="trajectory-node-content">
+              <strong className="trajectory-node-title">{item.title}</strong>
+              {item.lines &&
+                item.lines.map((line, idx) => (
+                  <span key={idx} className="trajectory-node-line">
+                    {line}
+                  </span>
+                ))}
+              <span className="trajectory-node-year">{item.period}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
 
-export function CapabilitiesAndAbout({ skillMatrix, cvTrajectory = [], identity }) {
+export function CapabilitiesAndAbout({ skillMatrix, cvTrajectory = {}, identity }) {
   const sectionRef = useRef(null);
   const revealed = useScrollReveal(sectionRef);
   const trajectoryRef = useRef(null);
   const trajectoryRevealed = useScrollReveal(trajectoryRef);
   const footerRef = useRef(null);
   const footerRevealed = useScrollReveal(footerRef, { threshold: 0.08, rootMargin: '0px 0px -16px 0px' });
+
+  const educationItems = cvTrajectory.education || [];
+  const experienceItems = cvTrajectory.experience || [];
 
   return (
     <>
@@ -97,11 +86,30 @@ export function CapabilitiesAndAbout({ skillMatrix, cvTrajectory = [], identity 
                     <h3 className="skill-category-title">{cat.category}</h3>
                   </div>
                   <div className="skill-items-list">
-                    {cat.skills.map((s) => (
-                      <span key={s} className="skill-chip-item">
-                        {s}
-                      </span>
-                    ))}
+                    {cat.skills.map((s) => {
+                      const isObj = typeof s === 'object' && s !== null;
+                      const skillName = isObj ? s.name : s;
+                      const skillTag = isObj ? s.tag : null;
+                      const skillLevel = isObj && typeof s.level === 'number' ? s.level : 85;
+                      return (
+                        <div
+                          key={skillName}
+                          className="skill-chip-item has-meter"
+                          title={`${skillName} · ${skillLevel}% úroveň & overená prax`}
+                        >
+                          <div className="skill-chip-top">
+                            <span className="skill-chip-name">{skillName}</span>
+                            {skillTag && <span className="skill-chip-tag">{skillTag}</span>}
+                          </div>
+                          <div className="skill-chip-meter" aria-hidden="true">
+                            <div
+                              className="skill-chip-meter-bar"
+                              style={{ width: `${skillLevel}%` }}
+                            />
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               ))}
@@ -127,14 +135,25 @@ export function CapabilitiesAndAbout({ skillMatrix, cvTrajectory = [], identity 
               </h2>
             </div>
             <p className="section-lead">
-              Kompletný chronologický prehľad môjho vzdelania od gymnázia Šrobárka v Košiciach cez štúdium a výskum na FEI TUKE až po priemyselný vývoj a open-source.
+              Chronologická os môjho štúdia, certifikátov, akademického výskumu na FEI TUKE a priemyselnej praxe.
             </p>
           </div>
 
-          <div className="cv-timeline-list">
-            {cvTrajectory.map((item, idx) => (
-              <CvMilestoneCard key={item.id} item={item} index={idx} />
-            ))}
+          <div className="trajectory-columns-grid">
+            <TrajectoryColumn
+              kicker="Akademická dráha & Certifikácie"
+              title="Vzdelanie a štúdium"
+              icon={GraduationCap}
+              items={educationItems}
+              delay={0}
+            />
+            <TrajectoryColumn
+              kicker="Priemysel, Výskum & Open-Source"
+              title="Pôsobenie a inžinierska prax"
+              icon={Briefcase}
+              items={experienceItems}
+              delay={90}
+            />
           </div>
         </div>
       </section>

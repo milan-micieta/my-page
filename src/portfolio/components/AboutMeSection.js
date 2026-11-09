@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { useScrollReveal } from '../utils/useScrollReveal';
+import { TiltCard } from './MotionPrimitives';
 
 export function AboutMeSection({ aboutStory, focusAreas }) {
   const sectionRef = useRef(null);
@@ -25,7 +26,11 @@ export function AboutMeSection({ aboutStory, focusAreas }) {
 
         <div className="about-bento-row stagger-item stagger-2">
           {focusAreas.map((area) => (
-            <div key={area.id} className="about-focus-card">
+            <TiltCard
+              key={area.id}
+              innerClassName="about-focus-card"
+              maxTilt={9}
+            >
               <span className="focus-card-kicker">{area.kicker}</span>
               <h3 className="focus-card-title">{area.title}</h3>
               <p className="focus-card-desc">{area.description}</p>
@@ -36,7 +41,7 @@ export function AboutMeSection({ aboutStory, focusAreas }) {
                   </span>
                 ))}
               </div>
-            </div>
+            </TiltCard>
           ))}
         </div>
       </div>

@@ -5,6 +5,7 @@ import { HeroSection } from './components/HeroSection';
 import { AboutMeSection } from './components/AboutMeSection';
 import { ProjectsSection } from './components/ProjectsSection';
 import { CapabilitiesAndAbout } from './components/CapabilitiesAndAbout';
+import { useLenisSmoothScroll } from './utils/useLenisSmoothScroll';
 
 const THEME_STORAGE_KEY = 'milan-portfolio-theme-mode';
 
@@ -30,9 +31,12 @@ function getInitialThemeMode() {
   return 'auto';
 }
 
-export function PortfolioPage() {
+export function PortfolioPage({ onSelectProject, onNavigateToWork }) {
+  useLenisSmoothScroll();
+
   const [themeMode, setThemeMode] = useState(getInitialThemeMode);
   const [systemIsDark, setSystemIsDark] = useState(getSystemDarkPreference);
+  const [inProjectsZone, setInProjectsZone] = useState(false);
 
   const surfaceTone =
     themeMode === 'auto'
@@ -91,7 +95,7 @@ export function PortfolioPage() {
 
   return (
     <div
-      className={`portfolio-shell theme-${surfaceTone}`}
+      className={`portfolio-shell theme-${surfaceTone} ${inProjectsZone ? 'in-projects-zone' : ''}`}
       data-testid="portfolio-shell"
     >
       <TopNav
@@ -99,6 +103,7 @@ export function PortfolioPage() {
         themeMode={themeMode}
         onToggleSurfaceTone={handleToggleSurfaceTone}
         onSelectThemeMode={handleSelectThemeMode}
+        onNavigateToWork={onNavigateToWork}
       />
 
       <main>
@@ -113,8 +118,12 @@ export function PortfolioPage() {
         />
 
         <ProjectsSection
-          projects={PROFILE_DATA.projects}
+          projects={PROFILE_DATA.homeProjects || PROFILE_DATA.projects}
           categories={PROFILE_DATA.categories}
+          surfaceTone={surfaceTone}
+          onInProjectsZoneChange={setInProjectsZone}
+          onSelectProject={onSelectProject}
+          onNavigateToWork={onNavigateToWork}
         />
 
         <CapabilitiesAndAbout

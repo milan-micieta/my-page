@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { GitCommit } from 'lucide-react';
 import { REAL_DAILY_CONTRIBUTIONS } from '../data/contributionsData';
 import { useScrollReveal } from '../utils/useScrollReveal';
+import { useSlidingTabsPill, AnimatedNumber } from './MotionPrimitives';
 
 const MONTH_NAMES_SK = [
   'Jan',
@@ -46,7 +47,9 @@ export function ContributionGraph() {
   const [hoveredDay, setHoveredDay] = useState(null);
 
   const cardRef = useRef(null);
+  const filterTabsRef = useRef(null);
   const revealed = useScrollReveal(cardRef, { threshold: 0.08, rootMargin: '0px 0px -24px 0px' });
+  useSlidingTabsPill(filterTabsRef, sourceFilter);
 
   // Live fetch from public GitHub contributions API to keep @milan-micieta public activity up-to-date
   useEffect(() => {
@@ -155,16 +158,24 @@ export function ContributionGraph() {
           <div className="contribution-headline-row">
             <GitCommit size={16} strokeWidth={2} className="contribution-icon" aria-hidden="true" />
             <h3 className="contribution-count-title">
-              <span className="contribution-total-num">{totalCount}</span> príspevkov za posledný rok
+              <AnimatedNumber value={totalCount} className="contribution-total-num" /> príspevkov za posledný rok
             </h3>
-            <span className="contribution-active-badge">{activeDaysCount} aktívnych dní</span>
+            <span className="contribution-active-badge">
+              <AnimatedNumber value={activeDaysCount} /> aktívnych dní
+            </span>
           </div>
           <p className="contribution-subtitle">
             Reálna aktivita naprieč repozitármi (GitHub @milan-micieta · FEI TUKE GitLab · Enterprise GitLab)
           </p>
         </div>
 
-        <div className="contribution-filter-pills" role="tablist" aria-label="Filter zdroja príspevkov">
+        <div
+          ref={filterTabsRef}
+          className="contribution-filter-pills t-tabs"
+          role="tablist"
+          aria-label="Filter zdroja príspevkov"
+        >
+          <span className="t-tabs-pill" aria-hidden="true" />
           {SOURCE_FILTERS.map((filter) => (
             <button
               key={filter.id}
@@ -172,7 +183,7 @@ export function ContributionGraph() {
               role="tab"
               aria-selected={sourceFilter === filter.id}
               onClick={() => setSourceFilter(filter.id)}
-              className={`contribution-filter-btn ${sourceFilter === filter.id ? 'is-active' : ''}`}
+              className={`contribution-filter-btn t-tab ${sourceFilter === filter.id ? 'is-active' : ''}`}
             >
               {filter.label}
             </button>
