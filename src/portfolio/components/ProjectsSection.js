@@ -247,10 +247,6 @@ export function ProjectsSection({
   const { k, t } = computeCardDeckStates(scrollProgress, visibleProjects.length);
   const activeIndex = t >= 0.5 ? Math.min(visibleProjects.length - 1, k + 1) : k;
   const activeProject = visibleProjects[activeIndex] || visibleProjects[0];
-  const progressPercent = Math.min(
-    100,
-    Math.max(0, ((k + t + 1) / visibleProjects.length) * 100)
-  );
 
   // Continuous physics-based scrollytelling: continuous scroll drives buttery fluid transitions
   useEffect(() => {

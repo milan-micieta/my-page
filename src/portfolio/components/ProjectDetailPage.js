@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import {
   ArrowLeft,
-  ArrowRight,
   GitBranch,
   Layers,
   Calendar,
@@ -11,7 +10,6 @@ import {
   ChevronLeft,
   ChevronRight,
 } from 'lucide-react';
-import { LearnMoreChevron } from './MotionPrimitives';
 
 const PROJECT_THEMES = {
   'draven-sql-evaluation': {
