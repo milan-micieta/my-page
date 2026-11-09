@@ -60,19 +60,17 @@
 .sw__kicker {
   display: block;
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 11.5px;
   font-weight: 500;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.02em;
   color: var(--accent);
-  text-transform: uppercase;
   margin-bottom: 6px;
 }
 
 .sw__title {
   font-family: var(--font-sans);
   font-size: clamp(30px, 2.8vw, 40px);
-  font-weight: 500;
-  font-style: italic;
+  font-weight: 600;
   line-height: 1.08;
   letter-spacing: -0.025em;
   color: var(--ink-primary);
@@ -107,7 +105,7 @@
   display: flex;
   align-items: baseline;
   gap: 12px;
-  padding: 5px 0;
+  padding: 6px 0;
   background: transparent;
   border: none;
   box-shadow: none;
@@ -116,7 +114,7 @@
   user-select: none;
   text-align: left;
   opacity: 0.35;
-  transition: opacity 180ms ease, color 180ms ease;
+  transition: opacity var(--duration-quick) var(--ease-smooth-out), color var(--duration-quick) var(--ease-smooth-out);
 }
 
 .sw__index-item:focus {
@@ -142,7 +140,7 @@
   font-variant-numeric: tabular-nums;
   color: var(--ink-muted);
   flex-shrink: 0;
-  transition: color 180ms ease;
+  transition: color var(--duration-quick) var(--ease-smooth-out);
 }
 
 .sw__name {
@@ -156,7 +154,7 @@
   text-overflow: ellipsis;
   display: inline-flex;
   align-items: center;
-  transition: color 180ms ease;
+  transition: color var(--duration-quick) var(--ease-smooth-out);
 }
 
 /* ACTIVE STATE: Clean contrast, zero left border, subtle dot */
@@ -200,7 +198,7 @@
   padding: 16px 0;
   border-top: 1px solid rgba(255, 255, 255, 0.07);
   border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-  animation: sw-brief-fade 280ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: sw-brief-fade var(--duration-fast) var(--ease-smooth-out) both;
   text-align: left;
 }
 
@@ -326,7 +324,7 @@
   padding: 0;
   cursor: pointer;
   overflow: hidden;
-  transition: height 160ms ease, background-color 160ms ease;
+  transition: height var(--duration-quick) var(--ease-smooth-out), background-color var(--duration-quick) var(--ease-smooth-out);
 }
 
 .portfolio-shell:not(.in-projects-zone):not(.theme-atelier) .sw__segment {
@@ -348,7 +346,7 @@
   height: 100%;
   background: var(--accent);
   border-radius: 999px;
-  transition: width 240ms cubic-bezier(0.16, 1, 0.3, 1), background-color 200ms ease;
+  transition: width var(--duration-fast) var(--ease-smooth-out), background-color var(--duration-quick) var(--ease-smooth-out);
 }
 
 .sw__segment.is-active .sw__segment-fill {
@@ -382,7 +380,7 @@
   background: transparent;
   color: var(--ink-muted);
   cursor: pointer;
-  transition: all 140ms ease;
+  transition: color var(--duration-quick) var(--ease-smooth-out), border-color var(--duration-quick) var(--ease-smooth-out), background-color var(--duration-quick) var(--ease-smooth-out);
   padding: 0;
 }
 
@@ -425,7 +423,7 @@
   box-shadow:
     0 32px 80px -16px rgba(0, 0, 0, 0.65),
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
-  transition: background 600ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition: background var(--duration-medium) var(--ease-smooth-out);
   perspective: 1200px;
 }
 
@@ -438,9 +436,9 @@
   padding: 24px;
   will-change: transform, opacity, filter;
   transition:
-    transform 320ms cubic-bezier(0.16, 1, 0.3, 1),
-    filter 320ms cubic-bezier(0.16, 1, 0.3, 1),
-    opacity 320ms cubic-bezier(0.16, 1, 0.3, 1);
+    transform var(--duration-medium) var(--ease-smooth-out),
+    filter var(--duration-medium) var(--ease-smooth-out),
+    opacity var(--duration-medium) var(--ease-smooth-out);
 }
 
 .sw__reel.is-active {
@@ -698,7 +696,7 @@
   font-size: 11px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 160ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition: color var(--duration-quick) var(--ease-smooth-out), background-color var(--duration-quick) var(--ease-smooth-out), border-color var(--duration-quick) var(--ease-smooth-out), transform var(--duration-quick) var(--ease-smooth-out);
 }
 
 .sw__bar-action-btn:hover {
@@ -742,7 +740,7 @@
   flex-direction: column;
   gap: 16px;
   box-shadow: var(--fg-shadow-soft);
-  transition: border-color 150ms ease, box-shadow 150ms ease;
+  transition: border-color var(--duration-quick) var(--ease-smooth-out), box-shadow var(--duration-quick) var(--ease-smooth-out);
 }
 
 .theme-atelier .project-engineering-panel,
@@ -830,3 +828,22 @@
   color: var(--ink-secondary);
   flex: 1;
 }
+
+/* ==========================================================================
+   transitions.dev Accessibility Guard (prefers-reduced-motion)
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .sw__reel,
+  .sw__active-brief,
+  .sw__index-item,
+  .sw__segment,
+  .sw__segment-fill,
+  .sw__bar-action-btn,
+  .sw__stage,
+  .projects-nav-btn {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}
+

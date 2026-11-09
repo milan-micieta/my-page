@@ -370,7 +370,7 @@ export function ProjectsSection({
             <div className="sw__left">
               {/* PINNED SECTION HEADING */}
               <div className="sw__heading-block">
-                <span className="sw__kicker">02 / VYBRANÉ PRÁCE</span>
+                <span className="sw__kicker">02 / Vybrané práce</span>
                 <h2 id="projects-heading" className="sw__title">
                   Selected work
                 </h2>
