@@ -1,0 +1,185 @@
+/* ==========================================================================
+   04 / CV Trajectory — Vertical Line & Nodes (Vzdelanie & Prax)
+   ========================================================================== */
+.cv-trajectory-section {
+  padding: 64px 0;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.trajectory-columns-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+}
+
+.trajectory-column-card {
+  padding: 28px 32px;
+  border-radius: var(--fg-radius-card);
+  background-color: var(--fg-surface-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--fg-border);
+  box-shadow: var(--fg-shadow-card);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  transition:
+    opacity 620ms var(--ease-craft) var(--reveal-delay, 0ms),
+    transform 620ms var(--ease-craft) var(--reveal-delay, 0ms),
+    border-color 180ms var(--ease-craft),
+    box-shadow 180ms var(--ease-craft);
+}
+
+.theme-atelier .trajectory-column-card,
+[data-theme="dark"] .trajectory-column-card {
+  background-color: rgba(24, 22, 19, 0.82);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+}
+
+.trajectory-column-card:hover {
+  border-color: var(--fg-border-hover);
+}
+
+.trajectory-column-header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.trajectory-column-kicker {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent);
+}
+
+.trajectory-column-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.trajectory-column-icon {
+  color: var(--accent);
+}
+
+.trajectory-column-title {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--ink-primary);
+}
+
+/* Vertical Line Track with Dots (used in both Hero Card and Section 04) */
+.trajectory-line-track {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-left: 24px;
+  margin-left: 6px;
+}
+
+.trajectory-line-track::before {
+  content: "";
+  position: absolute;
+  top: 7px;
+  bottom: 4px;
+  left: 0;
+  width: 1.5px;
+  background-color: var(--hairline-strong);
+  border-radius: 2px;
+}
+
+.trajectory-line-track.is-compact {
+  gap: 14px;
+  padding-left: 20px;
+  margin-left: 5px;
+  margin-top: 2px;
+}
+
+.trajectory-line-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.trajectory-node-dot {
+  position: absolute;
+  left: -24px;
+  top: 5px;
+  width: 9px;
+  height: 9px;
+  margin-left: -3.75px;
+  border-radius: 50%;
+  background-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--bg-card);
+  transition: transform 180ms var(--ease-craft), box-shadow 180ms var(--ease-craft);
+  z-index: 1;
+}
+
+.trajectory-line-track.is-compact .trajectory-node-dot {
+  left: -20px;
+  top: 5px;
+  width: 8px;
+  height: 8px;
+  margin-left: -3.25px;
+}
+
+.trajectory-line-item:hover .trajectory-node-dot {
+  transform: scale(1.25);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+.trajectory-node-content {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.trajectory-node-title {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--ink-primary);
+}
+
+.trajectory-line-track.is-compact .trajectory-node-title {
+  font-size: 13.5px;
+}
+
+.trajectory-node-line {
+  font-family: var(--font-sans);
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--ink-secondary);
+}
+
+.trajectory-line-track.is-compact .trajectory-node-line {
+  font-size: 12px;
+}
+
+.trajectory-node-year {
+  margin-top: 3px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.trajectory-line-track.is-compact .trajectory-node-year {
+  font-size: 11px;
+  margin-top: 1px;
+}
+
+.footer-trajectory-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
