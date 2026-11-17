@@ -241,12 +241,24 @@ describe('PortfolioPage Authentic Craft Showcase (Confidentiality & Anti-Slop)',
     ).toBeInTheDocument();
   });
 
-  test('renders real Git Contribution Graph and filters contributions by source', () => {
-    render(<App />);
+  test('renders real Git Contribution Graph including current incomplete week and filters contributions by source', () => {
+    const { container } = render(<App />);
 
     const graphCard = screen.getByTestId('contribution-graph-card');
     expect(graphCard).toBeInTheDocument();
     expect(screen.getByText(/príspevkov za posledný rok/i)).toBeInTheDocument();
+
+    // Verify all 53 week columns are rendered with --week-idx stagger variable and today is included
+    const weekCols = container.querySelectorAll('.contribution-week-col');
+    expect(weekCols.length).toBe(53);
+    expect(weekCols[52].style.getPropertyValue('--week-idx')).toBe('52');
+
+    const now = new Date();
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'Máj', 'Jún', 'Júl', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'];
+    const todayLabel = `${now.getDate()}. ${monthNames[now.getMonth()]} ${now.getFullYear()}`;
+    const todayCell = screen.getByRole('gridcell', { name: new RegExp(todayLabel.replace('.', '\\.')) });
+    expect(todayCell).toBeInTheDocument();
+    expect(weekCols[52].contains(todayCell)).toBe(true);
 
     // Filter by FEI TUKE GitLab
     const feiFilterBtn = screen.getByRole('tab', { name: /FEI TUKE GitLab/i });

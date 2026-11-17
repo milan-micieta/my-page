@@ -78,8 +78,9 @@ export function ContributionGraph() {
   }, []);
 
   const { weeks, monthLabels, totalCount, activeDaysCount } = useMemo(() => {
-    // Anchor end date to latest date in dataset or current date (2026-11-08)
-    const endDate = new Date(2026, 10, 8);
+    // Anchor end date to today (local midnight) so the current incomplete week is always rendered
+    const now = new Date();
+    const endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     // Start 52 weeks earlier, aligned to Monday (row 0 = Monday, ..., row 6 = Sunday)
     const startDate = new Date(endDate);
     startDate.setDate(endDate.getDate() - 364);
@@ -224,7 +225,12 @@ export function ContributionGraph() {
             aria-label="Kalendár Git príspevkov za posledných 53 týždňov"
           >
             {weeks.map((week, wIdx) => (
-              <div key={wIdx} className="contribution-week-col" role="row">
+              <div
+                key={wIdx}
+                className="contribution-week-col"
+                role="row"
+                style={{ '--week-idx': wIdx }}
+              >
                 {week.map((day) =>
                   day.isFuture ? (
                     <span
@@ -254,7 +260,7 @@ export function ContributionGraph() {
       <div className="contribution-footer">
         <div className="contribution-hover-status" aria-live="polite">
           {hoveredDay ? (
-            <span>
+            <span key={hoveredDay.date}>
               <strong>
                 {hoveredDay.count}{' '}
                 {hoveredDay.count === 1
@@ -273,7 +279,7 @@ export function ContributionGraph() {
               )}
             </span>
           ) : (
-            <span>Prejdi myšou nad políčko pre detailný rozpis dňa podľa zdroja</span>
+            <span key="empty">Prejdi myšou nad políčko pre detailný rozpis dňa podľa zdroja</span>
           )}
         </div>
 

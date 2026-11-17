@@ -204,7 +204,24 @@
   border: 1px solid rgba(27, 31, 35, 0.06);
   padding: 0;
   cursor: pointer;
-  transition: transform 120ms ease, border-color 120ms ease;
+  transition:
+    background-color var(--duration-fast, 250ms) var(--ease-smooth-out, cubic-bezier(0.22, 1, 0.36, 1)),
+    opacity var(--duration-fast, 250ms) var(--ease-smooth-out, cubic-bezier(0.22, 1, 0.36, 1)),
+    transform var(--duration-quick, 150ms) var(--ease-smooth-out, cubic-bezier(0.22, 1, 0.36, 1)),
+    border-color var(--duration-quick, 150ms) var(--ease-smooth-out, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+.contribution-week-col .contribution-cell:not(.is-future) {
+  transition-delay:
+    calc(var(--week-idx, 0) * 3ms),
+    calc(var(--week-idx, 0) * 4ms),
+    calc(var(--week-idx, 0) * 4ms),
+    0ms;
+}
+
+.contribution-graph-card:not(.is-visible) .contribution-week-col .contribution-cell:not(.is-future) {
+  opacity: 0;
+  transform: scale(0.75);
 }
 
 .contribution-cell.is-future {
@@ -212,12 +229,13 @@
   pointer-events: none;
 }
 
-.contribution-cell:hover,
-.contribution-cell:focus-visible {
+.contribution-week-col .contribution-cell:not(.is-future):hover,
+.contribution-week-col .contribution-cell:not(.is-future):focus-visible {
   transform: scale(1.22);
   border-color: var(--ink-primary);
   z-index: 2;
   outline: none;
+  transition-delay: 0ms;
 }
 
 /* Light Mode Contribution Levels (Authentic GitHub Green Scale) */
@@ -305,4 +323,37 @@
   font-size: 11px;
   color: var(--ink-muted);
   margin: 0 3px;
+}
+
+.contribution-hover-status > span {
+  display: inline-block;
+  animation: contribution-status-in var(--duration-quick, 150ms) var(--ease-smooth-out, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+@keyframes contribution-status-in {
+  from {
+    opacity: 0;
+    transform: translateY(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contribution-cell,
+  .contribution-week-col .contribution-cell:not(.is-future) {
+    transition: none !important;
+    transition-delay: 0ms !important;
+  }
+
+  .contribution-graph-card:not(.is-visible) .contribution-week-col .contribution-cell:not(.is-future) {
+    opacity: 1;
+    transform: none;
+  }
+
+  .contribution-hover-status > span {
+    animation: none !important;
+  }
 }
