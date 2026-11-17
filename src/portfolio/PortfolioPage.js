@@ -95,7 +95,7 @@ export function PortfolioPage({ onSelectProject, onNavigateToWork }) {
 
   return (
     <div
-      className={`portfolio-shell theme-${surfaceTone} ${inProjectsZone ? 'in-projects-zone' : ''}`}
+      className={`portfolio-shell theme-${surfaceTone} ${inProjectsZone && surfaceTone === 'atelier' ? 'in-projects-zone' : ''}`}
       data-testid="portfolio-shell"
     >
       <TopNav

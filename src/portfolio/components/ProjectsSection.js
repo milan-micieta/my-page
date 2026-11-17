@@ -102,23 +102,18 @@ function getProjectBackdrop(projectId, surfaceTone) {
 }
 
 function computeCardDeckStates(p, totalCount) {
-  if (p <= 0) return { k: 0, t: 0 };
+  if (p <= 0 || totalCount <= 1) return { k: 0, t: 0 };
   const maxIdx = totalCount - 1;
   if (p >= maxIdx) return { k: maxIdx, t: 0 };
 
   const k = Math.min(maxIdx - 1, Math.max(0, Math.floor(p)));
   const frac = p - k;
 
-  // Plateau from 0.0 to 0.18: rest at project k
-  // Plateau from 0.82 to 1.0: rest at project k + 1
-  // Smooth continuous transition from 0.18 to 0.82
+  // Hold project k crisp from 0.0 to 0.72 of its segment, then crossfade smoothly
+  // from 0.72 to 1.0 so project k + 1 arrives 100% crisp right at the start of segment k + 1.
   let t = 0;
-  if (frac <= 0.18) {
-    t = 0;
-  } else if (frac >= 0.82) {
-    t = 1;
-  } else {
-    const rawT = (frac - 0.18) / 0.64;
+  if (frac > 0.72) {
+    const rawT = (frac - 0.72) / 0.28;
     t = rawT * rawT * (3 - 2 * rawT);
   }
 
@@ -245,8 +240,16 @@ export function ProjectsSection({
 
   const visibleProjects = projects;
   const { k, t } = computeCardDeckStates(scrollProgress, visibleProjects.length);
-  const activeIndex = t >= 0.5 ? Math.min(visibleProjects.length - 1, k + 1) : k;
+  const activeIndex = Math.min(
+    Math.max(0, visibleProjects.length - 1),
+    Math.floor(scrollProgress)
+  );
   const activeProject = visibleProjects[activeIndex] || visibleProjects[0];
+
+  const getSegmentFill = (idx) => {
+    if (visibleProjects.length <= 1) return 1;
+    return Math.max(0, Math.min(1, scrollProgress - idx));
+  };
 
   // Continuous physics-based scrollytelling: continuous scroll drives buttery fluid transitions
   useEffect(() => {
@@ -278,14 +281,9 @@ export function ProjectsSection({
 
       if (totalScrollable <= 0) return;
 
-      // Exit runway: provides a 90vh resting plateau so the final project stays in full view before unpinning
-      const exitBufferPx = windowH * 0.90;
-      const transitionScrollable = Math.max(1, totalScrollable - exitBufferPx);
-
       const scrollOffset = stickyTop - deskRect.top;
-      const transitionProgress = Math.min(1, Math.max(0, scrollOffset / transitionScrollable));
-      const targetProgress = transitionProgress * (visibleProjects.length - 1);
-      setScrollProgress(targetProgress);
+      const fullRatio = Math.min(1, Math.max(0, scrollOffset / totalScrollable));
+      setScrollProgress(fullRatio * visibleProjects.length);
     };
 
     updateScrollState();
@@ -334,12 +332,8 @@ export function ProjectsSection({
     const stickyTop = parseFloat(getComputedStyle(sticky).top) || 72;
     const deskAbsoluteTop = desk.getBoundingClientRect().top + window.scrollY;
 
-    const windowH = typeof window !== 'undefined' ? window.innerHeight : 800;
-    const exitBufferPx = windowH * 0.90;
-    const transitionScrollable = Math.max(1, totalScrollable - exitBufferPx);
-
-    const targetRatio = visibleProjects.length > 1 ? targetIdx / (visibleProjects.length - 1) : 0;
-    const targetScrollY = deskAbsoluteTop - stickyTop + targetRatio * transitionScrollable;
+    const targetRatio = visibleProjects.length > 0 ? targetIdx / visibleProjects.length : 0;
+    const targetScrollY = deskAbsoluteTop - stickyTop + targetRatio * totalScrollable;
 
     window.scrollTo({
       top: targetScrollY,
@@ -377,41 +371,18 @@ export function ProjectsSection({
                 <span className="sw__subtitle">Inžinierske projekty &amp; systémová architektúra</span>
               </div>
 
-              {/* ULTRA-MINIMAL SWISS PROJECT INDEX (Pure typography, no boxes, no left borders) */}
-              <ol className="sw__index" role="tablist" aria-label="Zoznam projektov">
-                {visibleProjects.map((p, idx) => {
-                  const isActive = activeIndex === idx;
-                  const itemLabel = p.shortTitle || p.title.split('—')[0].trim();
-                  return (
-                    <li
-                      key={p.id}
-                      role="tab"
-                      tabIndex={0}
-                      aria-selected={isActive}
-                      className={`sw__index-item ${isActive ? 'is-active' : ''}`}
-                      onClick={() => scrollToProjectIndex(idx)}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                          e.preventDefault();
-                          scrollToProjectIndex(idx);
-                        }
-                      }}
-                    >
-                      <span className="sw__num">{p.index || `0${idx + 1}`}</span>
-                      <span className="sw__name">
-                        {itemLabel}
-                        {isActive && <span className="sw__active-dot-inline" aria-hidden="true" />}
-                      </span>
-                    </li>
-                  );
-                })}
-              </ol>
-
-              {/* ACTIVE PROJECT EDITORIAL BRIEF (Ksenia Panchenko style: concise, perfectly aligned, uniform) */}
+              {/* ACTIVE PROJECT STEP (Videorc-inspired: active step number + title + concise brief) */}
               {activeProject && (() => {
                 const brief = getProjectBrief(activeProject);
+                const stepNum = activeProject.index || String(activeIndex + 1).padStart(2, '0');
+                const stepTitle = activeProject.shortTitle || activeProject.title.split('—')[0].trim();
                 return (
                   <div className="sw__active-brief" key={activeProject.id}>
+                    <div className="sw__step-meta" aria-hidden="true">
+                      <span className="sw__step-num">{stepNum}</span>
+                      <span className="sw__step-line" />
+                    </div>
+                    <h3 className="sw__step-title">{stepTitle}</h3>
                     <p className="sw__brief-pitch">{brief.pitch}</p>
                     <div className="sw__brief-domain">{brief.domain}</div>
                     <div className="sw__brief-tools">
@@ -422,7 +393,7 @@ export function ProjectsSection({
                 );
               })()}
 
-              {/* MINIMAL FOOTER WITH HUGE KINETIC DIGIT & SEGMENTED TRACK (Arrows removed) */}
+              {/* MINIMAL FOOTER WITH HUGE KINETIC DIGIT */}
               <div className="sw__footer">
                 <div
                   className="sw__big-counter"
@@ -438,38 +409,17 @@ export function ProjectsSection({
                     </span>
                   </div>
                 </div>
-
-                <div
-                  className="sw__segmented-track"
-                  role="progressbar"
-                  tabIndex={0}
-                  aria-label="Rýchly presun medzi projektmi"
-                  aria-valuenow={activeIndex + 1}
-                  aria-valuemin={1}
-                  aria-valuemax={visibleProjects.length}
-                >
-                  {visibleProjects.map((_, idx) => (
-                    <button
-                      key={idx}
-                      type="button"
-                      className={`sw__segment ${idx === activeIndex ? 'is-active' : ''} ${idx < activeIndex ? 'is-completed' : ''}`}
-                      onClick={() => scrollToProjectIndex(idx)}
-                      aria-label={`Prejsť na projekt 0${idx + 1}`}
-                    >
-                      <span className="sw__segment-fill" />
-                    </button>
-                  ))}
-                </div>
               </div>
             </div>
 
-            {/* RIGHT COLUMN: Stage Showcase with Apple-grade Smooth Depth Crossfade */}
-            <div
-              className="sw__stage"
-              style={{
-                background: getProjectBackdrop(activeProject?.id, surfaceTone),
-              }}
-            >
+            {/* RIGHT COLUMN: Stage Showcase + Centered Continuous Scroll Progress Track */}
+            <div className="sw__stage-col">
+              <div
+                className="sw__stage"
+                style={{
+                  background: getProjectBackdrop(activeProject?.id, surfaceTone),
+                }}
+              >
               {visibleProjects.map((p, idx) => {
                 let reelStyle = {};
                 let isCardActive = false;
@@ -559,6 +509,40 @@ export function ProjectsSection({
                   </div>
                 );
               })}
+              </div>
+
+              <div
+                className="sw__segmented-track"
+                role="progressbar"
+                tabIndex={0}
+                aria-label="Progres scrollovania medzi projektmi"
+                aria-valuenow={activeIndex + 1}
+                aria-valuemin={1}
+                aria-valuemax={visibleProjects.length}
+              >
+                {visibleProjects.map((_, idx) => {
+                  const segmentFill = getSegmentFill(idx);
+                  const isLastCompleted = idx === visibleProjects.length - 1 && segmentFill >= 0.995;
+                  const isCompleted = idx < activeIndex || isLastCompleted;
+                  const isCurrent = idx === activeIndex && !isLastCompleted;
+                  return (
+                    <button
+                      key={idx}
+                      type="button"
+                      className={`sw__segment ${isCurrent ? 'is-active' : ''} ${isCompleted ? 'is-completed' : ''}`}
+                      onClick={() => scrollToProjectIndex(idx)}
+                      aria-label={`Prejsť na projekt 0${idx + 1}`}
+                    >
+                      <span className="sw__segment-track">
+                        <span
+                          className="sw__segment-fill"
+                          style={{ transform: `scaleX(${isCompleted ? 1 : segmentFill})` }}
+                        />
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>

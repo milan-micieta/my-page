@@ -189,17 +189,52 @@
   box-shadow: 0 0 6px var(--accent);
 }
 
-/* ACTIVE PROJECT EDITORIAL BRIEF (Ksenia Panchenko style: concise, perfectly aligned, uniform) */
+/* ACTIVE PROJECT STEP (Videorc-inspired: step number + rule + title + concise brief) */
 .sw__active-brief {
   margin: auto 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 16px 0;
+  gap: 10px;
+  padding: 18px 0;
   border-top: 1px solid rgba(255, 255, 255, 0.07);
   border-bottom: 1px solid rgba(255, 255, 255, 0.07);
   animation: sw-brief-fade var(--duration-fast) var(--ease-smooth-out) both;
   text-align: left;
+}
+
+.sw__step-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sw__step-num {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+  letter-spacing: 0.04em;
+}
+
+.sw__step-line {
+  width: 28px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.portfolio-shell:not(.in-projects-zone):not(.theme-atelier) .sw__step-line {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.sw__step-title {
+  font-family: var(--font-sans);
+  font-size: clamp(20px, 1.8vw, 26px);
+  font-weight: 600;
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  color: var(--ink-primary);
+  margin: 0;
 }
 
 .portfolio-shell:not(.in-projects-zone):not(.theme-atelier) .sw__active-brief {
@@ -305,62 +340,76 @@
   opacity: 0.6;
 }
 
-/* SEGMENTED TRACK (Minimalist Swiss Timeline) */
+/* SEGMENTED TRACK (Videorc-inspired continuous scroll progress under stage) */
 .sw__segmented-track {
   display: flex;
   align-items: center;
-  gap: 6px;
-  width: 100%;
-  padding: 4px 0;
+  gap: 8px;
+  width: clamp(200px, 28vw, 320px);
+  margin: 0 auto;
+  padding: 2px 0;
+  flex-shrink: 0;
 }
 
 .sw__segment {
   position: relative;
   flex: 1;
-  height: 2px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.1);
+  height: 18px;
+  display: flex;
+  align-items: center;
+  background: transparent;
   border: none;
   padding: 0;
   cursor: pointer;
+}
+
+.sw__segment:focus-visible {
+  outline: 1px dotted var(--accent);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+.sw__segment-track {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 2px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
   overflow: hidden;
   transition: height var(--duration-quick) var(--ease-smooth-out), background-color var(--duration-quick) var(--ease-smooth-out);
 }
 
-.portfolio-shell:not(.in-projects-zone):not(.theme-atelier) .sw__segment {
-  background: rgba(0, 0, 0, 0.1);
+.portfolio-shell:not(.in-projects-zone):not(.theme-atelier) .sw__segment-track {
+  background: rgba(23, 22, 21, 0.12);
 }
 
-.sw__segment:hover {
+.sw__segment:hover .sw__segment-track {
   height: 3px;
   background: rgba(255, 255, 255, 0.22);
 }
 
-.portfolio-shell:not(.in-projects-zone):not(.theme-atelier) .sw__segment:hover {
-  background: rgba(0, 0, 0, 0.22);
+.portfolio-shell:not(.in-projects-zone):not(.theme-atelier) .sw__segment:hover .sw__segment-track {
+  background: rgba(23, 22, 21, 0.22);
 }
 
 .sw__segment-fill {
   display: block;
-  width: 0%;
+  width: 100%;
   height: 100%;
+  transform-origin: left center;
   background: var(--accent);
   border-radius: 999px;
-  transition: width var(--duration-fast) var(--ease-smooth-out), background-color var(--duration-quick) var(--ease-smooth-out);
-}
-
-.sw__segment.is-active .sw__segment-fill {
-  width: 100%;
-  box-shadow: 0 0 6px var(--accent);
 }
 
 .sw__segment.is-completed .sw__segment-fill {
-  width: 100%;
-  background: rgba(255, 255, 255, 0.45);
+  background: var(--accent);
+  opacity: 0.38;
 }
 
 .portfolio-shell:not(.in-projects-zone):not(.theme-atelier) .sw__segment.is-completed .sw__segment-fill {
-  background: rgba(0, 0, 0, 0.4);
+  background: var(--accent);
+  opacity: 0.42;
 }
 
 .sw__arrows {
@@ -411,8 +460,16 @@
   display: none;
 }
 
+.sw__stage-col {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  gap: 14px;
+}
+
 .sw__stage {
   position: relative;
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -425,6 +482,13 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
   transition: background var(--duration-medium) var(--ease-smooth-out);
   perspective: 1200px;
+}
+
+.portfolio-shell:not(.in-projects-zone):not(.theme-atelier) .sw__stage {
+  border-color: rgba(23, 22, 21, 0.08);
+  box-shadow:
+    0 24px 64px -16px rgba(23, 22, 21, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 .sw__reel {
